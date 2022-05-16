@@ -132,7 +132,7 @@ const MapChart = () => {
                             </text>
                         </Marker>
                     ))}
-                    {AuthorData.filter(author => (!checked ? author.Required : true) && parseInt(author.TimeDied) > value1[0] && parseInt(author.TimeDied) <= value1[1]).map((info) => (   
+                    {AuthorData.filter(author => (!checked ? author.Required : true) && parseInt(author.TimeDied) > value1[0] && parseInt(author.TimeDied) < value1[1]).map((info) => (   
                         <Line  
                             key={info.Name}
                             coordinates={[info.CoordsBorn, info.CoordsDied]}
