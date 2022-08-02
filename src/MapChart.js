@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { memo, useState } from "react";
 import {
   ComposableMap,
   Geographies,
@@ -17,6 +17,8 @@ import Checkbox from '@mui/material/Checkbox';
 import Box from '@mui/material/Box';
 import Slider from '@mui/material/Slider';
 import "./slider.css";
+
+const geoUrl = "https://raw.githubusercontent.com/deldersveld/topojson/master/world-countries.json"
 
 
 function valuetext(value) {
@@ -50,12 +52,9 @@ const marks = [
     },
 ];
 
-const geoUrl =
-  "https://raw.githubusercontent.com/zcreativelabs/react-simple-maps/master/topojson-maps/world-110m.json";
-
 const minDistance = 50;
 
-const MapChart = () => {
+const MapChart = ({setTooltipContent}) => {
 
     const [value1, setValue1] = useState([-500, -400]);
     const [checked, setChecked] = useState(true);
@@ -92,7 +91,7 @@ const MapChart = () => {
             />
         </Box>
         <p className="mapCaption">Move the slider to select a timeframe.</p>
-        <ComposableMap>
+        <ComposableMap data-tip="">
             <ZoomableGroup zoom={1}>
                 <Geographies geography={geoUrl}>
                     {({ geographies }) =>
@@ -103,6 +102,26 @@ const MapChart = () => {
                             geography={geo}
                             fill="#EAEAEC"
                             stroke="#D6D6DA"
+                            onMouseEnter={() => {
+                                setTooltipContent(`${geo.properties.name}`);
+                            }}
+                            onMouseLeave={() => {
+                                setTooltipContent("");
+                            }}
+                            style={{
+                                default: {
+                                  fill: "#D6D6DA",
+                                  outline: "none"
+                                },
+                                hover: {
+                                  fill: "#F53",
+                                  outline: "none"
+                                },
+                                pressed: {
+                                  fill: "#E42",
+                                  outline: "none"
+                                }
+                            }}
                         />
                         ))
                     }
@@ -176,4 +195,4 @@ const MapChart = () => {
   );
 };
 
-export default MapChart;
+export default memo(MapChart);
